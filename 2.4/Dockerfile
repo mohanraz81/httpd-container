@@ -34,7 +34,7 @@ EXPOSE 8443
 
 RUN yum install -y yum-utils && \
     yum install -y centos-release-scl epel-release && \
-    INSTALL_PKGS="gettext hostname nss_wrapper bind-utils httpd24 httpd24-mod_ssl httpd24-mod_auth_mellon httpd24-mod_security openssl" && \
+    INSTALL_PKGS="gettext hostname nss_wrapper bind-utils httpd24 httpd24-mod_ssl httpd24-mod_auth_mellon httpd24-mod_security openssl php php-gd php-mysql" && \
     yum install -y --setopt=tsflags=nodocs $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum -y clean all --enablerepo='*'
@@ -66,7 +66,7 @@ COPY ./root /
 RUN /usr/libexec/httpd-prepare && rpm-file-permissions
 
 USER 1001
-
+ADD src /var/www/html/
 # Not using VOLUME statement since it's not working in OpenShift Online:
 # https://github.com/sclorg/httpd-container/issues/30
 # VOLUME ["${HTTPD_DATA_PATH}"]
